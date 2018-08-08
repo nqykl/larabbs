@@ -34,4 +34,11 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
-
+//resource 等同于下面三个路由,是 隐性路由模型绑定
+//路由声明时必须使用 Eloquent 模型的单数小写格式来作为 路由片段参数,User 对应 {user}
+//控制器方法传参中必须包含对应的 Eloquent 模型类型 提示，并且是有序的
+//当请求 http://larabbs.test/users/1 并且满足以上两个条件时，Laravel 将会自动查找 ID 为 1 的用户并赋值到变量 $user 中
+Route::resource('users', 'UsersController', ['only' => ['show', 'update', 'edit']]);
+//Route::get('/users/{user}', 'UsersController@show')->name('users.show');
+//Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
+//Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
