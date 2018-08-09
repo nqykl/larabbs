@@ -38,7 +38,7 @@ class UsersController extends Controller
         $this->authorize('update', $user);
         return view('users.edit',compact('user'));
     }
-    
+
     /**
      * 更新用户,包含头像,增加权限
      * @param UserRequest $request
