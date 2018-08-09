@@ -9,6 +9,12 @@ use App\Handlers\ImageUploadHandler;
 
 class UsersController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth',['except'=>['show']]);
+    }
+
     /**
      * 展示用户
      * @param User $user
@@ -20,22 +26,26 @@ class UsersController extends Controller
         return view('users.show',compact('user'));
     }
 
+
     /**
-     * 编辑用户
+     * 编辑用户 --有权限控制
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('users.edit',compact('user'));
     }
-
+    
     /**
-     * 更新用户,包含头像
+     * 更新用户,包含头像,增加权限
      * @param UserRequest $request
      * @param ImageUploadHandler $uploader
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(UserRequest $request, ImageUploadHandler $uploader, User $user)
     {
@@ -46,7 +56,7 @@ class UsersController extends Controller
         // 第二种方法，可读性更高
         //$file = $request->avatar;
         //dd($request->avatar);
-
+        $this->authorize('update', $user);
         $data = $request->all();
 
         if ($request->avatar) {
