@@ -29,8 +29,12 @@ class TopicsController extends Controller
 	}
 
 
-    public function show(Topic $topic)
+    public function show(Request $request,Topic $topic)
     {
+        // URL 矫正
+        if ( ! empty($topic->slug) && $topic->slug != $request->slug) {
+            return redirect($topic->link(), 301);
+        }
         //使用 Laravel 的 『隐性路由模型绑定』 功能，当请求 http://larabbs.test/topics/1 时，$topic 变量会自动解析为 ID 为 1 的帖子对象
         return view('topics.show', compact('topic'));
     }
@@ -46,7 +50,7 @@ class TopicsController extends Controller
 	    $topic->fill($request->all());
 	    $topic->user_id = Auth::id();
 		$topic->save();
-		return redirect()->route('topics.show', $topic->id)->with('message', '成功创建话题！.');
+		return redirect()->to($topic->link())->with('message', '成功创建话题！.');
 	}
 
 	public function edit(Topic $topic)
@@ -61,7 +65,7 @@ class TopicsController extends Controller
 		$this->authorize('update', $topic);
 		$topic->update($request->all());
 
-		return redirect()->route('topics.show', $topic->id)->with('message', '更新成功！');
+		return redirect()->to($topic->link())->with('message', '更新成功！');
 	}
 
 	public function destroy(Topic $topic)
