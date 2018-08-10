@@ -4,7 +4,8 @@ namespace App\Models;
 
 class Topic extends Model
 {
-    protected $fillable = ['title', 'body', 'user_id', 'category_id', 'reply_count', 'view_count', 'last_reply_user_id', 'order', 'excerpt', 'slug'];
+    //$fillable 属性允许用户直接对数据进行修改
+    protected $fillable = ['title', 'body', 'category_id', 'excerpt', 'slug'];
 
 
     /**
