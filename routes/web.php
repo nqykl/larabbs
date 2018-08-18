@@ -14,7 +14,8 @@
 /*Route::get('/', function () {
     return view('welcome');
 });*/
-Route::get('/', 'PagesController@root')->name('root');
+//Route::get('/', 'PagesController@root')->name('root');
+Route::get('/', 'TopicsController@index')->name('root');
 
 //默认生成的，等价于下面的路由
 //Auth::routes();
